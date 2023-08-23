@@ -1,7 +1,19 @@
 const express = require('express');
 const http = require('http');
 const app = express();
-const server = http.createServer(app)
+const server = http.createServer(app);
+const NodeClam = require('clamscan');
+const ClamScan = new NodeClam().init({
+    debugMode: true,
+    scanRecursively: false,
+    clamscan: {
+        active: false,
+    },
+    clamdscan: {
+        host: "clamav-service-vs.rhm-consumption-management.svc.cluster.local",
+        port: 3310,
+    },
+});
 
 // See: http://expressjs.com/en/4x/api.html#app.settings.table
 const PRODUCTION = app.get('env') === 'production';
@@ -11,9 +23,13 @@ const PRODUCTION = app.get('env') === 'production';
 app.get('/ready', (req, res) => res.status(200).json({ status: "ok" }));
 app.get('/live', (req, res) => res.status(200).json({ status: "ok" }));
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
+    const readStream = new stream.Readable();
+    readStream.push('test');
+    readStream.push(null);
+    const result = await clamscan.scanStream(readStream);
     // Use req.log (a `pino` instance) to log JSON:
-    res.send('Hello from Node.js Starter Application!');
+    res.send(`Hello from Node.js Starter Application! ${JSON.stringify(result)}`);
 });
 
 app.get('*', (req, res) => {
