@@ -15,6 +15,9 @@ RUN \
 
 # Copy the dependencies into a Slim Node docker image
 FROM registry.access.redhat.com/ubi8/nodejs-18-minimal:latest
+USER root
+RUN yum -y update
+RUN yum -y install nc wget bind-utils iputils
 
 # Install app dependencies
 COPY --from=0 /opt/app-root/src/node_modules /opt/app-root/src/node_modules
