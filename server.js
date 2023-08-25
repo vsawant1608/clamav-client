@@ -27,8 +27,12 @@ app.get('/', async (req, res) => {
     const readStream = new stream.Readable();
     readStream.push('test');
     readStream.push(null);
-    const result = await clamscan.scanStream(readStream);
-    console.log(`Result is ${JSON.stringify(result)}`);
+    try {
+        const result = await clamscan.scanStream(readStream);
+        console.log(`Result is ${JSON.stringify(result)}`);
+    } catch (err) {
+        console.log(`Error is ${JSON.stringify(err)}`);
+    }
     // Use req.log (a `pino` instance) to log JSON:
     res.send(`Hello from Node.js Starter Application!`);
 });
