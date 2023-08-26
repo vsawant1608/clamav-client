@@ -19,8 +19,8 @@ app.get('/', async (req, res) => {
             active: false,
         },
         clamdscan: {
-            //host: "clamav-service-vs.rhm-consumption-management.svc.cluster.local",
-            host: "localhost",
+            host: "clamav-service-vs.rhm-consumption-management.svc.cluster.local",
+            //host: "localhost",
             port: 3310,
         },
     });
